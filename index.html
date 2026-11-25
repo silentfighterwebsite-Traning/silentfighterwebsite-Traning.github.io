@@ -1,0 +1,490 @@
+<title>Silent Fighter Academy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout concept: black gym wall, steel type, one red slash. Hero photo left-aligned,
+   fight film as a player, gallery as masonry. Colours come straight from the logo. */
+:root{
+  --ink:#08090a; --coal:#101215; --panel:#161920; --steel:#d9dde3; --steel-dim:#8d95a3;
+  --line:rgba(255,255,255,.12); --red:#e11d2a; --red-deep:#9d0f1b;
+  --display:'Anton','Impact','Arial Narrow',sans-serif;
+  --body:'Barlow','Helvetica Neue',Arial,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink); color:var(--steel); font-family:var(--body); font-size:17px; line-height:1.55;
+  padding-block:0; padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px));
+}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:50; background:var(--ink)}
+img,video,svg{max-width:100%}
+a{color:inherit}
+.wrap{max-width:1160px; margin-inline:auto}
+:focus-visible{outline:3px solid var(--red); outline-offset:3px}
+h1,h2,h3{font-family:var(--display); font-weight:400; font-style:italic; text-transform:uppercase; letter-spacing:.02em; line-height:1.02; margin:0; text-wrap:balance}
+h2{font-size:clamp(2.2rem,5vw,3.8rem)}
+h3{font-size:1.5rem}
+.eyebrow{font-family:var(--display); font-style:italic; text-transform:uppercase; letter-spacing:.28em; font-size:.82rem; color:var(--red); margin:0 0 .9rem}
+.lede{font-size:1.15rem; color:var(--steel-dim); max-width:56ch}
+.btn{display:inline-flex; align-items:center; gap:.6rem; font-family:var(--display); font-style:italic; text-transform:uppercase; letter-spacing:.08em; font-size:1.05rem;
+  padding:.85rem 1.6rem; background:var(--red); color:#fff; text-decoration:none; border:2px solid var(--red); cursor:pointer; transform:skewX(-10deg); transition:background .15s,color .15s}
+.btn>span{display:inline-block; transform:skewX(10deg)}
+.btn:hover{background:#fff; color:var(--ink); border-color:#fff}
+.btn.ghost{background:transparent; color:var(--steel); border-color:var(--line)}
+.btn.ghost:hover{background:var(--steel); color:var(--ink); border-color:var(--steel)}
+
+/* nav */
+.nav{position:sticky; top:env(safe-area-inset-top,0px); z-index:40; background:rgba(8,9,10,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);
+  margin-inline:calc(-1*max(16px, env(safe-area-inset-left,0px))) calc(-1*max(16px, env(safe-area-inset-right,0px)));
+  padding-inline:max(16px, env(safe-area-inset-left,0px)) max(16px, env(safe-area-inset-right,0px))}
+.nav .wrap{display:flex; align-items:center; justify-content:space-between; gap:1rem; padding-block:.7rem}
+.brand{display:flex; align-items:center; gap:.7rem; text-decoration:none; font-family:var(--display); font-style:italic; letter-spacing:.06em; font-size:1.25rem; text-transform:uppercase}
+.brand img{width:44px; height:44px; border-radius:50%; object-fit:cover}
+.nav ul{display:flex; gap:1.6rem; list-style:none; margin:0; padding:0}
+.nav ul a{text-decoration:none; font-size:.95rem; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:var(--steel-dim)}
+.nav ul a:hover{color:#fff}
+.nav .btn{padding:.55rem 1.1rem; font-size:.9rem}
+
+/* hero */
+.hero{position:relative; margin-inline:calc(-1*max(16px, env(safe-area-inset-left,0px))) calc(-1*max(16px, env(safe-area-inset-right,0px))); overflow:hidden; isolation:isolate}
+.hero>img.bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 40%; z-index:-2; filter:grayscale(.6) contrast(1.05)}
+.hero::after{content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg,rgba(8,9,10,.96) 0%,rgba(8,9,10,.82) 45%,rgba(8,9,10,.45) 100%),linear-gradient(0deg,var(--ink) 0%,transparent 30%)}
+.hero .wrap{display:grid; grid-template-columns:1.2fr .8fr; gap:2rem; align-items:center; padding-block:5.5rem 6rem;
+  padding-inline:max(16px, env(safe-area-inset-left,0px)) max(16px, env(safe-area-inset-right,0px))}
+.hero h1{font-size:clamp(3.2rem,9vw,7rem); color:#fff}
+.hero h1 em{color:var(--red); font-style:inherit; display:block}
+.hero .lede{margin:1.4rem 0 2rem}
+.hero .actions{display:flex; flex-wrap:wrap; gap:1rem}
+.hero .mark{justify-self:center; width:min(100%,380px); mix-blend-mode:screen; opacity:.95}
+.hero .mark img{width:100%; display:block}
+.slash{height:6px; background:linear-gradient(90deg,var(--red) 0 35%,transparent 35%); max-width:1160px; margin-inline:auto}
+
+section{padding-block:5rem}
+.head{display:grid; gap:1rem; margin-bottom:2.5rem}
+
+/* academy */
+.academy .grid{display:grid; grid-template-columns:.9fr 1.1fr; gap:3rem; align-items:center}
+.academy figure{margin:0; position:relative}
+.academy figure img{width:100%; display:block; aspect-ratio:4/5; object-fit:cover; object-position:50% 20%; filter:grayscale(.25)}
+.academy figure::after{content:""; position:absolute; left:-14px; bottom:-14px; width:45%; height:8px; background:var(--red)}
+.pillars{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.2rem; margin-top:2rem; padding:0; list-style:none}
+.pillars li{border-top:2px solid var(--line); padding-top:.9rem}
+.pillars strong{display:block; font-family:var(--display); font-style:italic; text-transform:uppercase; letter-spacing:.05em; font-size:1.25rem; color:#fff; margin-bottom:.25rem}
+.pillars span{font-size:.95rem; color:var(--steel-dim)}
+
+/* fight film */
+.film{background:var(--coal); margin-inline:calc(-1*max(16px, env(safe-area-inset-left,0px))) calc(-1*max(16px, env(safe-area-inset-right,0px)));
+  padding-inline:max(16px, env(safe-area-inset-left,0px)) max(16px, env(safe-area-inset-right,0px)); border-block:1px solid var(--line)}
+.player{border:1px solid var(--line); background:#000}
+.stage{position:relative; aspect-ratio:16/9; background:#000; overflow:hidden}
+.stage svg{display:block; width:100%; height:100%}
+.controls{display:flex; align-items:center; gap:1rem; padding:.7rem 1rem; background:var(--panel); border-top:1px solid var(--line)}
+.controls button{background:none; border:1px solid var(--line); color:#fff; width:44px; height:44px; display:grid; place-items:center; cursor:pointer; flex:none}
+.controls button:hover{background:var(--red); border-color:var(--red)}
+.controls svg{width:20px; height:20px; fill:currentColor}
+.controls input[type=range]{flex:1; min-width:0; accent-color:var(--red); height:24px}
+.controls output{font-variant-numeric:tabular-nums; font-size:.9rem; color:var(--steel-dim); min-width:5.5ch; text-align:right}
+.moves{display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1.2rem; padding:0; list-style:none}
+.moves button{font:inherit; font-size:.9rem; letter-spacing:.06em; text-transform:uppercase; color:var(--steel); background:transparent; border:1px solid var(--line); padding:.5rem .9rem; cursor:pointer}
+.moves button:hover,.moves button[aria-current=true]{border-color:var(--red); color:#fff; background:rgba(225,29,42,.15)}
+.moves time{font-variant-numeric:tabular-nums; color:var(--red); margin-right:.5rem}
+
+/* programs */
+.cards{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.4rem}
+.card{background:var(--panel); border:1px solid var(--line); padding:1.8rem 1.6rem 2rem; display:flex; flex-direction:column; gap:.9rem}
+.card h3{color:#fff}
+.card p{margin:0; color:var(--steel-dim)}
+.card ul{margin:.4rem 0 0; padding:0; list-style:none; display:grid; gap:.45rem; font-size:.97rem}
+.card li{padding-left:1.1rem; position:relative}
+.card li::before{content:""; position:absolute; left:0; top:.6em; width:.5rem; height:2px; background:var(--red)}
+.note{margin-top:1.6rem; color:var(--steel-dim); font-size:.97rem}
+
+/* coaches */
+.coaches{background:var(--coal); margin-inline:calc(-1*max(16px, env(safe-area-inset-left,0px))) calc(-1*max(16px, env(safe-area-inset-right,0px)));
+  padding-inline:max(16px, env(safe-area-inset-left,0px)) max(16px, env(safe-area-inset-right,0px)); border-block:1px solid var(--line)}
+.coach-list{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.4rem; padding:0; margin:0; list-style:none}
+.coach{display:flex; flex-direction:column; gap:1rem; height:100%; background:var(--panel); border:1px solid var(--line); border-top:4px solid var(--red); padding:1.8rem 1.6rem; text-decoration:none; transition:border-color .15s, background .15s}
+.coach:hover{background:#1c2029; border-color:var(--red)}
+.coach .mono{width:64px; height:64px; display:grid; place-items:center; background:var(--red); color:#fff; font-family:var(--display); font-style:italic; font-size:1.9rem; transform:skewX(-10deg)}
+.coach .mono b{font-weight:400; transform:skewX(10deg)}
+.coach h3{color:#fff; font-size:1.35rem; word-break:break-all}
+.coach p{margin:0; color:var(--steel-dim); font-size:.97rem}
+.coach .go{margin-top:auto; font-size:.85rem; letter-spacing:.12em; text-transform:uppercase; color:var(--red); font-weight:600}
+
+/* gallery */
+.masonry{column-count:3; column-gap:1rem}
+.masonry button{display:block; width:100%; margin:0 0 1rem; padding:0; border:0; background:none; color:inherit; font:inherit; text-align:left; cursor:zoom-in; position:relative; break-inside:avoid}
+.masonry button:focus-visible{outline:3px solid var(--red); outline-offset:3px}
+.masonry img{display:block; width:100%; height:auto; filter:grayscale(.2); transition:filter .2s}
+.masonry button:hover img{filter:none}
+.masonry span{position:absolute; left:0; bottom:0; right:0; padding:2rem .9rem .7rem; font-size:.85rem; letter-spacing:.1em; text-transform:uppercase; background:linear-gradient(0deg,rgba(0,0,0,.85),transparent)}
+.lightbox{position:fixed; inset:0; z-index:100; background:rgba(0,0,0,.94); display:grid; place-items:center; padding:1rem}
+.lightbox[hidden]{display:none}
+.lightbox img{max-height:88vh; max-width:100%; object-fit:contain}
+.lightbox button{position:absolute; top:calc(1rem + env(safe-area-inset-top,0px)); right:1rem; width:48px; height:48px; background:var(--red); color:#fff; border:0; font-size:1.6rem; cursor:pointer}
+
+/* videos */
+.vids{display:grid; grid-template-columns:repeat(2,minmax(0,360px)); gap:2rem; justify-content:start}
+.vid{margin:0}
+.vid video{width:100%; display:block; aspect-ratio:9/16; object-fit:cover; background:#000; border:1px solid var(--line)}
+.vid figcaption{margin-top:.7rem; font-size:.95rem; color:var(--steel-dim)}
+.vid figcaption b{color:#fff; font-family:var(--display); font-style:italic; text-transform:uppercase; letter-spacing:.05em; font-weight:400; font-size:1.15rem; display:block}
+
+/* join */
+.join{background:var(--red-deep); margin-inline:calc(-1*max(16px, env(safe-area-inset-left,0px))) calc(-1*max(16px, env(safe-area-inset-right,0px)));
+  padding-inline:max(16px, env(safe-area-inset-left,0px)) max(16px, env(safe-area-inset-right,0px));
+  background-image:linear-gradient(115deg,rgba(0,0,0,.55),rgba(0,0,0,0) 60%)}
+.join .wrap{display:grid; grid-template-columns:1.2fr .8fr; gap:2.5rem; align-items:center}
+.join h2{color:#fff; font-size:clamp(2.6rem,6vw,4.8rem)}
+.join p{margin:1.1rem 0 0; max-width:50ch; color:#f3d6d9}
+.handle{display:grid; gap:.8rem; justify-items:start}
+.handle .tag{font-family:var(--display); font-style:italic; font-size:1.7rem; letter-spacing:.04em; color:#fff; word-break:break-all}
+.handle .btn{background:#fff; color:var(--ink); border-color:#fff}
+.handle .btn:hover{background:var(--ink); color:#fff; border-color:var(--ink)}
+.handle .btn.ghost{background:transparent; color:#fff; border-color:rgba(255,255,255,.5)}
+.handle .btn.ghost:hover{background:#fff; color:var(--ink)}
+.handle small{color:#f3d6d9}
+
+footer{padding-block:2.5rem; color:var(--steel-dim); font-size:.92rem}
+footer .wrap{display:flex; flex-wrap:wrap; gap:1rem 2rem; justify-content:space-between; align-items:center}
+footer .brand{font-size:1.05rem; color:var(--steel)}
+footer .brand img{width:36px; height:36px}
+
+@media (max-width:900px){
+  .nav ul{display:none}
+  .hero .wrap,.academy .grid,.join .wrap{grid-template-columns:minmax(0,1fr)}
+  .hero .mark{display:none}
+  .hero .wrap{padding-block:4rem 4.5rem}
+  .cards,.coach-list{grid-template-columns:minmax(0,1fr)}
+  .masonry{column-count:2}
+  .academy figure{max-width:420px}
+  section{padding-block:3.5rem}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .pillars{grid-template-columns:minmax(0,1fr)}
+  .vids{grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:.8rem}
+  .masonry{column-gap:.6rem}
+  .masonry button{margin-bottom:.6rem}
+  .controls{gap:.6rem; padding:.6rem}
+  .brand span{display:none}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important}}
+</style>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="img/logo.jpg" alt=""><span>Silentfighter</span></a>
+    <ul>
+      <li><a href="#academy">Academy</a></li>
+      <li><a href="#coaches">Coaches</a></li>
+      <li><a href="#film">Fight film</a></li>
+      <li><a href="#training">Training</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#videos">Videos</a></li>
+    </ul>
+    <a class="btn" href="#join"><span>Join us</span></a>
+  </div>
+</header>
+
+<main id="top">
+<div class="hero">
+  <img class="bg" src="img/class-wide.jpg" width="1170" height="878" alt="">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Silentfighter Fight Academy</p>
+      <h1>Train quiet.<em>Fight sharp.</em></h1>
+      <p class="lede">Kickboxing for kids, teens and first-timers. Real technique, steady discipline and coaches who train beside you every session.</p>
+      <div class="actions">
+        <a class="btn" href="#join"><span>Book a trial class</span></a>
+        <a class="btn ghost" href="#film"><span>Watch a round</span></a>
+      </div>
+    </div>
+    <div class="mark"><img src="img/logo.jpg" alt="Silentfighter Fight Academy logo: a hooded fighter with hands pressed together above the letters SF"></div>
+  </div>
+</div>
+<div class="slash" aria-hidden="true"></div>
+
+<section class="academy" id="academy">
+  <div class="wrap grid">
+    <figure>
+      <img src="img/team-1.jpg" alt="Coaches and students of the academy standing together in team shirts on the mat">
+    </figure>
+    <div>
+      <p class="eyebrow">The academy</p>
+      <h2>A quiet room. A loud work ethic.</h2>
+      <p class="lede" style="margin-top:1.2rem">Our name comes from the idea that a fighter doesn't need to announce anything. You show up, you drill the basics until they are clean, and you let the mat do the talking.</p>
+      <ul class="pillars">
+        <li><strong>Discipline</strong><span>On time, gloves wrapped, ready to work.</span></li>
+        <li><strong>Technique</strong><span>Stance, footwork and clean strikes before power.</span></li>
+        <li><strong>Respect</strong><span>For coaches, partners and the mat. Every round ends with a glove touch.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="coaches" id="coaches">
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Coaches</p>
+      <h2>Meet your coaches</h2>
+      <p class="lede">The people who hold the pads, correct your stance and train beside you every session.</p>
+    </div>
+    <ul class="coach-list">
+      <li><a class="coach" href="https://www.instagram.com/mahmoud_david7" target="_blank" rel="noopener" aria-label="@mahmoud_david7 on Instagram (opens in a new tab)">
+        <span class="mono" aria-hidden="true"><b>M</b></span>
+        <h3>@mahmoud_david7</h3>
+        <p>Coach at Silentfighter Fight Academy.</p>
+        <span class="go">Instagram &rarr;</span>
+      </a></li>
+      <li><a class="coach" href="https://www.instagram.com/a.dhshn" target="_blank" rel="noopener" aria-label="@a.dhshn on Instagram (opens in a new tab)">
+        <span class="mono" aria-hidden="true"><b>A</b></span>
+        <h3>@a.dhshn</h3>
+        <p>Coach at Silentfighter Fight Academy.</p>
+        <span class="go">Instagram &rarr;</span>
+      </a></li>
+      <li><a class="coach" href="https://www.instagram.com/c.ehab_qaneer" target="_blank" rel="noopener" aria-label="@c.ehab_qaneer on Instagram (opens in a new tab)">
+        <span class="mono" aria-hidden="true"><b>E</b></span>
+        <h3>@c.ehab_qaneer</h3>
+        <p>Coach at Silentfighter Fight Academy.</p>
+        <span class="go">Instagram &rarr;</span>
+      </a></li>
+    </ul>
+  </div>
+</section>
+</div>
+
+<div class="film" id="film">
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Fight film</p>
+      <h2>One round. No words.</h2>
+      <p class="lede">A 30 second animated round, drawn entirely in SVG. Jabs, a low kick and check, a block and counter, a high kick, a knee, and a glove touch to finish. Use the buttons to jump to a move.</p>
+    </div>
+    <div class="player">
+      <div class="stage" id="stage"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" role="img" aria-label="Animated kickboxing round between two fighters"><title>Silent Fighter, one round</title><desc>A 30 second animated kickboxing round: jabs, low kicks, blocks, a high kick, a knee, and a respectful glove touch.</desc>
+<defs>
+ <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#050506"/><stop offset="1" stop-color="#14161a"/></linearGradient>
+ <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#303a45"/><stop offset="1" stop-color="#171c23"/></linearGradient>
+ <radialGradient id="spot" cx=".5" cy=".0" r=".9"><stop offset="0" stop-color="#ffffff" stop-opacity=".30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+ <radialGradient id="vig" cx=".5" cy=".5" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></radialGradient>
+ <polygon id="burst" points="0,-46 11,-18 40,-24 20,-2 44,18 14,16 8,44 -2,20 -30,36 -18,8 -46,-6 -16,-12"/>
+</defs>
+<rect width="1280" height="720" fill="url(#wall)"/>
+<g opacity=".16" fill="#fff" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="64" text-anchor="middle" letter-spacing="6">
+ <text x="640" y="230">THE SILENT FIGHTER ACADEMY</text></g>
+<rect x="0" y="262" width="1280" height="6" fill="#c8102e" opacity=".8"/>
+<g fill="#0b0c0e" stroke="#2a2d33" stroke-width="2">
+ <line x1="110" y1="0" x2="110" y2="150"/><rect x="82" y="150" width="56" height="150" rx="14"/>
+ <line x1="1170" y1="0" x2="1170" y2="150"/><rect x="1142" y="150" width="56" height="150" rx="14"/>
+</g>
+<polygon points="0,470 1280,470 1280,720 0,720" fill="url(#floor)"/>
+<g stroke="#ffffff" stroke-opacity=".05" stroke-width="2">
+ <line x1="0" y1="520" x2="1280" y2="520"/><line x1="0" y1="610" x2="1280" y2="610"/>
+ <line x1="640" y1="470" x2="640" y2="720"/><line x1="320" y1="470" x2="-120" y2="720"/><line x1="960" y1="470" x2="1400" y2="720"/>
+</g>
+<path d="M440,0 L840,0 L1040,560 L240,560 Z" fill="url(#spot)"/>
+<g><animateTransform attributeName="transform" type="translate" dur="30s" repeatCount="indefinite" calcMode="linear" keyTimes="0.0000;0.2130;0.2147;0.2163;0.2180;0.2200;0.2323;0.2340;0.2357;0.2373;0.2393;0.2537;0.2553;0.2570;0.2587;0.2607;0.3013;0.3030;0.3047;0.3063;0.3083;0.3513;0.3530;0.3547;0.3563;0.3583;0.3663;0.3680;0.3697;0.3713;0.3733;0.3870;0.3887;0.3903;0.3920;0.3940;0.5447;0.5463;0.5480;0.5497;0.5517;0.6597;0.6613;0.6630;0.6647;0.6667;0.7330;0.7347;0.7363;0.7380;0.7400;0.7497;0.7513;0.7530;0.7547;0.7567;0.7680;0.7697;0.7713;0.7730;0.7750;0.8280;0.8297;0.8313;0.8330;0.8350;1.0000" values="0.0,0.0;0.0,0.0;9.8,-4.9;-7.8,4.9;3.9,-2.5;0.0,0.0;0.0,0.0;9.8,-4.9;-7.8,4.9;3.9,-2.5;0.0,0.0;0.0,0.0;12.2,-6.1;-9.8,6.1;4.9,-3.0;0.0,0.0;0.0,0.0;10.4,-5.2;-8.3,5.2;4.2,-2.6;0.0,0.0;0.0,0.0;9.2,-4.6;-7.4,4.6;3.7,-2.3;0.0,0.0;0.0,0.0;10.4,-5.2;-8.3,5.2;4.2,-2.6;0.0,0.0;0.0,0.0;11.6,-5.8;-9.3,5.8;4.6,-2.9;0.0,0.0;0.0,0.0;14.0,-7.0;-11.2,7.0;5.6,-3.5;0.0,0.0;0.0,0.0;12.8,-6.4;-10.2,6.4;5.1,-3.2;0.0,0.0;0.0,0.0;9.8,-4.9;-7.8,4.9;3.9,-2.5;0.0,0.0;0.0,0.0;11.0,-5.5;-8.8,5.5;4.4,-2.8;0.0,0.0;0.0,0.0;11.6,-5.8;-9.3,5.8;4.6,-2.9;0.0,0.0;0.0,0.0;11.0,-5.5;-8.8,5.5;4.4,-2.8;0.0,0.0;0.0,0.0"/><g><g transform="translate(0,0)"><ellipse cx="0" cy="0" rx="58" ry="9" fill="#000" opacity=".45"><animateTransform attributeName="transform" type="translate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2050;0.2133;0.2217;0.2267;0.2327;0.2400;0.2540;0.2633;0.2800;0.2917;0.2983;0.3100;0.3233;0.3367;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3983;0.4167;0.4300;0.4492;0.4683;0.4875;0.5233;0.5450;0.5583;0.5733;0.5933;0.6200;0.6400;0.6600;0.6700;0.6900;0.7067;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8400;0.8600;0.8700;0.8867;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="330.0,564;330.0,564;330.0,564;330.0,564;330.0,564;330.0,564;357.1,564;384.3,564;411.4,564;438.6,564;465.7,564;492.9,564;540.0,564;575.0,564;565.0,564;568.0,564;580.0,564;572.0,564;598.0,564;604.0,564;596.0,564;596.0,564;596.0,564;582.0,564;574.0,564;600.0,564;596.0,564;508.6,564;590.0,564;510.0,564;585.0,564;600.0,564;602.0,564;590.0,564;560.0,564;527.5,564;495.0,564;462.5,564;450.0,564;470.0,564;475.0,564;470.0,564;470.0,564;520.0,564;540.0,564;593.1,564;520.0,564;500.0,564;505.0,564;540.0,564;565.0,564;560.0,564;564.3,564;556.3,564;580.3,564;582.3,564;572.3,564;580.3,564;582.3,564;582.3,564;578.3,564;578.3,564;554.1,564;540.0,564;540.0,564;530.0,564;530.0,564;530.0,564"/></ellipse></g></g><g><g><animateTransform attributeName="transform" type="translate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2050;0.2133;0.2217;0.2267;0.2327;0.2400;0.2540;0.2633;0.2800;0.2917;0.2983;0.3100;0.3233;0.3367;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3983;0.4167;0.4300;0.4492;0.4683;0.4875;0.5233;0.5450;0.5583;0.5733;0.5933;0.6200;0.6400;0.6600;0.6700;0.6900;0.7067;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8400;0.8600;0.8700;0.8867;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="330.0,399.2;330.0,399.9;330.0,399.2;330.0,399.9;330.0,399.2;330.0,399.2;357.1,399.9;384.3,399.2;411.4,399.9;438.6,399.2;465.7,399.9;492.9,399.2;540.0,401.1;575.0,405.5;565.0,399.2;568.0,401.1;580.0,405.5;572.0,402.6;598.0,396.2;604.0,399.9;596.0,399.2;596.0,399.9;596.0,396.6;582.0,396.6;574.0,399.2;600.0,401.1;596.0,402.5;508.6,402.5;590.0,401.4;510.0,402.5;585.0,402.6;600.0,396.2;602.0,399.2;590.0,399.9;560.0,399.2;527.5,399.9;495.0,399.2;462.5,399.9;450.0,391.2;470.0,385.1;475.0,391.2;470.0,399.2;470.0,401.1;520.0,401.1;540.0,402.5;593.1,402.5;520.0,404.9;500.0,404.9;505.0,399.2;540.0,401.1;565.0,405.5;560.0,401.1;564.3,401.1;556.3,402.6;580.3,396.2;582.3,399.9;572.3,399.2;580.3,396.9;582.3,395.4;582.3,396.9;578.3,399.2;578.3,399.2;554.1,399.9;540.0,401.1;540.0,401.1;530.0,395.8;530.0,395.8;530.0,401.1"/><g transform="scale(1,1)"><g transform="translate(0,0)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2050;0.2133;0.2217;0.2267;0.2327;0.2400;0.2540;0.2633;0.2800;0.2917;0.2983;0.3100;0.3233;0.3367;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3983;0.4167;0.4300;0.4492;0.4683;0.4875;0.5233;0.5450;0.5583;0.5733;0.5933;0.6200;0.6400;0.6600;0.6700;0.6900;0.7067;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8400;0.8600;0.8700;0.8867;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="-30.0;-20.0;-30.0;-20.0;-30.0;-30.0;-20.0;-30.0;-20.0;-30.0;-20.0;-30.0;-28.0;-34.0;-30.0;-28.0;-34.0;-25.0;-32.0;-20.0;-30.0;-20.0;-52.0;-52.0;-30.0;-25.0;-28.0;-28.0;-22.0;-28.0;-25.0;-32.0;-30.0;-20.0;-30.0;-20.0;-30.0;-20.0;-4.0;-2.0;-4.0;-30.0;-25.0;-25.0;-28.0;-28.0;-30.0;-30.0;-30.0;-28.0;-34.0;-25.0;-25.0;-25.0;-32.0;-20.0;-30.0;-12.0;-4.0;-12.0;-30.0;-30.0;-20.0;-28.0;-28.0;-8.0;-8.0;-25.0"/><line x1="0" y1="0" x2="0" y2="78" stroke="#9aa2ae" stroke-width="25" stroke-linecap="round"/><g transform="translate(0,78)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2050;0.2133;0.2217;0.2267;0.2327;0.2400;0.2540;0.2633;0.2800;0.2917;0.2983;0.3100;0.3233;0.3367;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3983;0.4167;0.4300;0.4492;0.4683;0.4875;0.5233;0.5450;0.5583;0.5733;0.5933;0.6200;0.6400;0.6600;0.6700;0.6900;0.7067;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8400;0.8600;0.8700;0.8867;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="36.0;24.0;36.0;24.0;36.0;36.0;24.0;36.0;24.0;36.0;24.0;36.0;34.0;40.0;36.0;34.0;40.0;30.0;34.0;24.0;36.0;24.0;96.0;96.0;36.0;30.0;36.0;36.0;30.0;36.0;30.0;34.0;36.0;24.0;36.0;24.0;36.0;24.0;6.0;3.0;6.0;36.0;30.0;30.0;36.0;36.0;40.0;40.0;36.0;34.0;40.0;30.0;30.0;30.0;34.0;24.0;36.0;16.0;8.0;16.0;36.0;36.0;24.0;34.0;34.0;10.0;10.0;30.0"/><line x1="0" y1="0" x2="0" y2="78" stroke="#9aa2ae" stroke-width="19" stroke-linecap="round"/><line x1="0" y1="78" x2="17" y2="82" stroke="#9aa2ae" stroke-width="13" stroke-linecap="round"/></g></g></g></g><g><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2050;0.2133;0.2217;0.2267;0.2327;0.2400;0.2540;0.2633;0.2800;0.2917;0.2983;0.3100;0.3233;0.3367;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3983;0.4167;0.4300;0.4492;0.4683;0.4875;0.5233;0.5450;0.5583;0.5733;0.5933;0.6200;0.6400;0.6600;0.6700;0.6900;0.7067;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8400;0.8600;0.8700;0.8867;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="9.0;7.0;9.0;7.0;9.0;9.0;7.0;9.0;7.0;9.0;7.0;9.0;6.0;16.0;9.0;6.0;16.0;2.0;24.0;7.0;9.0;7.0;10.0;10.0;9.0;8.0;18.0;18.0;12.0;18.0;2.0;24.0;9.0;7.0;9.0;7.0;9.0;7.0;-8.0;-34.0;-8.0;9.0;8.0;8.0;18.0;18.0;26.0;26.0;9.0;6.0;16.0;8.0;8.0;2.0;24.0;7.0;9.0;-6.0;-14.0;-6.0;9.0;9.0;7.0;6.0;6.0;34.0;34.0;8.0"/><g><g transform="translate(0,-84)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2050;0.2133;0.2217;0.2267;0.2327;0.2400;0.2540;0.2633;0.2800;0.2917;0.2983;0.3100;0.3233;0.3367;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3983;0.4167;0.4300;0.4492;0.4683;0.4875;0.5233;0.5450;0.5583;0.5733;0.5933;0.6200;0.6400;0.6600;0.6700;0.6900;0.7067;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8400;0.8600;0.8700;0.8867;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="-72.0;-78.0;-72.0;-78.0;-72.0;-72.0;-78.0;-72.0;-78.0;-72.0;-78.0;-72.0;-35.0;-103.0;-72.0;-35.0;-103.0;-75.0;-40.0;-78.0;-72.0;-78.0;-58.0;-58.0;-72.0;-75.0;-56.0;-56.0;-56.0;-56.0;-75.0;-40.0;-72.0;-78.0;-72.0;-78.0;-72.0;-78.0;-60.0;-10.0;-60.0;-72.0;-75.0;-75.0;-56.0;-56.0;-20.0;-20.0;-72.0;-35.0;-103.0;-75.0;-75.0;-75.0;-40.0;-78.0;-72.0;-40.0;-20.0;-40.0;-72.0;-72.0;-78.0;-96.0;-96.0;-8.0;-8.0;-75.0"/><line x1="0" y1="0" x2="0" y2="52" stroke="#9aa2ae" stroke-width="16" stroke-linecap="round"/><g transform="translate(0,52)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2050;0.2133;0.2217;0.2267;0.2327;0.2400;0.2540;0.2633;0.2800;0.2917;0.2983;0.3100;0.3233;0.3367;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3983;0.4167;0.4300;0.4492;0.4683;0.4875;0.5233;0.5450;0.5583;0.5733;0.5933;0.6200;0.6400;0.6600;0.6700;0.6900;0.7067;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8400;0.8600;0.8700;0.8867;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-125.0;-4.0;-105.0;-125.0;-4.0;-105.0;-130.0;-105.0;-105.0;-105.0;-122.0;-122.0;-105.0;-105.0;-124.0;-124.0;-124.0;-124.0;-105.0;-130.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-110.0;-100.0;-110.0;-105.0;-105.0;-105.0;-124.0;-124.0;-70.0;-70.0;-105.0;-125.0;-4.0;-105.0;-105.0;-105.0;-130.0;-105.0;-105.0;-110.0;-120.0;-110.0;-105.0;-105.0;-105.0;-4.0;-4.0;-20.0;-20.0;-105.0"/><line x1="0" y1="0" x2="0" y2="50" stroke="#9aa2ae" stroke-width="14" stroke-linecap="round"/><circle cx="0" cy="56" r="14" fill="#e11d2a"/></g></g></g></g></g><line x1="0" y1="-4" x2="0" y2="-86" stroke="#dfe3ea" stroke-width="40" stroke-linecap="round"/><line x1="0" y1="2" x2="0" y2="-22" stroke="#e11d2a" stroke-width="44" stroke-linecap="butt"/><g transform="translate(0,-92)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2050;0.2133;0.2217;0.2267;0.2327;0.2400;0.2540;0.2633;0.2800;0.2917;0.2983;0.3100;0.3233;0.3367;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3983;0.4167;0.4300;0.4492;0.4683;0.4875;0.5233;0.5450;0.5583;0.5733;0.5933;0.6200;0.6400;0.6600;0.6700;0.6900;0.7067;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8400;0.8600;0.8700;0.8867;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;6.0;6.0;4.0;6.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;6.0;0.0;0.0;0.0;0.0;6.0;6.0;14.0;14.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;4.0;0.0;0.0;0.0;0.0;0.0;0.0;18.0;18.0;0.0"/><line x1="0" y1="2" x2="2" y2="-8" stroke="#dfe3ea" stroke-width="12" stroke-linecap="round"/><circle cx="2" cy="-23" r="19" fill="#dfe3ea"/><path d="M-14,-31 a17,17 0 0 1 32,-2" stroke="#e11d2a" stroke-width="5" fill="none" stroke-linecap="round"/></g></g><g transform="translate(0,-84)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2050;0.2133;0.2217;0.2267;0.2327;0.2400;0.2540;0.2633;0.2800;0.2917;0.2983;0.3100;0.3233;0.3367;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3983;0.4167;0.4300;0.4492;0.4683;0.4875;0.5233;0.5450;0.5583;0.5733;0.5933;0.6200;0.6400;0.6600;0.6700;0.6900;0.7067;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8400;0.8600;0.8700;0.8867;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="-55.0;-58.0;-55.0;-58.0;-55.0;-55.0;-58.0;-55.0;-58.0;-55.0;-58.0;-55.0;-55.0;-55.0;-55.0;-55.0;-55.0;-20.0;-100.0;-58.0;-55.0;-58.0;-45.0;-45.0;-55.0;-55.0;-38.0;-38.0;-38.0;-38.0;-20.0;-100.0;-55.0;-58.0;-55.0;-58.0;-55.0;-58.0;20.0;40.0;20.0;-55.0;-55.0;-55.0;-38.0;-38.0;-15.0;-15.0;-55.0;-55.0;-55.0;-55.0;-55.0;-20.0;-100.0;-58.0;-55.0;15.0;30.0;15.0;-55.0;-55.0;-58.0;-55.0;-55.0;-8.0;-8.0;-55.0"/><line x1="0" y1="0" x2="0" y2="52" stroke="#dfe3ea" stroke-width="16" stroke-linecap="round"/><g transform="translate(0,52)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2050;0.2133;0.2217;0.2267;0.2327;0.2400;0.2540;0.2633;0.2800;0.2917;0.2983;0.3100;0.3233;0.3367;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3983;0.4167;0.4300;0.4492;0.4683;0.4875;0.5233;0.5450;0.5583;0.5733;0.5933;0.6200;0.6400;0.6600;0.6700;0.6900;0.7067;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8400;0.8600;0.8700;0.8867;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-130.0;-4.0;-125.0;-125.0;-125.0;-130.0;-130.0;-125.0;-125.0;-142.0;-142.0;-142.0;-142.0;-130.0;-4.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-80.0;-60.0;-80.0;-125.0;-125.0;-125.0;-142.0;-142.0;-60.0;-60.0;-125.0;-125.0;-125.0;-125.0;-125.0;-130.0;-4.0;-125.0;-125.0;-80.0;-70.0;-80.0;-125.0;-125.0;-125.0;-125.0;-125.0;-20.0;-20.0;-125.0"/><line x1="0" y1="0" x2="0" y2="50" stroke="#dfe3ea" stroke-width="14" stroke-linecap="round"/><circle cx="0" cy="56" r="14" fill="#e11d2a"/></g></g></g></g></g></g><g transform="translate(0,0)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2050;0.2133;0.2217;0.2267;0.2327;0.2400;0.2540;0.2633;0.2800;0.2917;0.2983;0.3100;0.3233;0.3367;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3983;0.4167;0.4300;0.4492;0.4683;0.4875;0.5233;0.5450;0.5583;0.5733;0.5933;0.6200;0.6400;0.6600;0.6700;0.6900;0.7067;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8400;0.8600;0.8700;0.8867;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="18.0;26.0;18.0;26.0;18.0;18.0;26.0;18.0;26.0;18.0;26.0;18.0;22.0;30.0;18.0;22.0;30.0;26.0;10.0;26.0;18.0;26.0;6.0;6.0;18.0;22.0;24.0;24.0;30.0;24.0;26.0;10.0;18.0;26.0;18.0;26.0;18.0;26.0;-58.0;-128.0;-58.0;18.0;22.0;22.0;24.0;24.0;28.0;28.0;18.0;22.0;30.0;22.0;22.0;26.0;10.0;26.0;18.0;44.0;-62.0;44.0;18.0;18.0;26.0;22.0;22.0;8.0;8.0;22.0"/><line x1="0" y1="0" x2="0" y2="78" stroke="#dfe3ea" stroke-width="25" stroke-linecap="round"/><g transform="translate(0,78)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2050;0.2133;0.2217;0.2267;0.2327;0.2400;0.2540;0.2633;0.2800;0.2917;0.2983;0.3100;0.3233;0.3367;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3983;0.4167;0.4300;0.4492;0.4683;0.4875;0.5233;0.5450;0.5583;0.5733;0.5933;0.6200;0.6400;0.6600;0.6700;0.6900;0.7067;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8400;0.8600;0.8700;0.8867;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="-24.0;-32.0;-24.0;-32.0;-24.0;-24.0;-32.0;-24.0;-32.0;-24.0;-32.0;-24.0;-28.0;-30.0;-24.0;-28.0;-30.0;-30.0;-8.0;-32.0;-24.0;-32.0;4.0;4.0;-24.0;-28.0;-32.0;-32.0;-30.0;-32.0;-30.0;-8.0;-24.0;-32.0;-24.0;-32.0;-24.0;-32.0;100.0;-4.0;100.0;-24.0;-28.0;-28.0;-32.0;-32.0;-36.0;-36.0;-24.0;-28.0;-30.0;-28.0;-28.0;-30.0;-8.0;-32.0;-24.0;-6.0;-8.0;-6.0;-24.0;-24.0;-32.0;-28.0;-28.0;-6.0;-6.0;-28.0"/><line x1="0" y1="0" x2="0" y2="78" stroke="#dfe3ea" stroke-width="19" stroke-linecap="round"/><line x1="0" y1="78" x2="17" y2="82" stroke="#dfe3ea" stroke-width="13" stroke-linecap="round"/></g></g></g></g></g></g></g><g><g transform="translate(0,0)"><ellipse cx="0" cy="0" rx="58" ry="9" fill="#000" opacity=".45"><animateTransform attributeName="transform" type="translate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2133;0.2200;0.2283;0.2327;0.2383;0.2467;0.2540;0.2633;0.2800;0.2917;0.3017;0.3150;0.3267;0.3383;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3967;0.4167;0.4367;0.4600;0.4833;0.5233;0.5450;0.5567;0.5800;0.6033;0.6200;0.6433;0.6600;0.6700;0.6900;0.7100;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8383;0.8600;0.8767;0.8900;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="950.0,564;950.0,564;950.0,564;950.0,564;950.0,564;950.0,564;923.6,564;897.1,564;870.7,564;844.3,564;817.9,564;791.4,564;739.0,564;751.0,564;743.0,564;742.1,564;752.1,564;744.1,564;768.8,564;808.8,564;812.8,564;808.8,564;782.5,564;788.5,564;808.5,564;750.0,564;745.0,564;725.0,564;735.0,564;735.0,564;748.0,564;768.8,564;800.0,564;810.0,564;800.0,564;820.0,564;840.0,564;850.0,564;601.4,564;656.4,564;663.4,564;656.4,564;690.0,564;700.0,564;705.0,564;712.0,564;730.0,564;740.0,564;745.0,564;729.0,564;733.0,564;735.0,564;743.0,564;751.0,564;787.0,564;791.0,564;791.0,564;751.9,564;773.9,564;781.9,564;781.9,564;776.0,564;768.0,564;768.0,564;778.0,564;778.0,564;778.0,564"/></ellipse></g></g><g><g><animateTransform attributeName="transform" type="translate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2133;0.2200;0.2283;0.2327;0.2383;0.2467;0.2540;0.2633;0.2800;0.2917;0.3017;0.3150;0.3267;0.3383;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3967;0.4167;0.4367;0.4600;0.4833;0.5233;0.5450;0.5567;0.5800;0.6033;0.6200;0.6433;0.6600;0.6700;0.6900;0.7100;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8383;0.8600;0.8767;0.8900;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="950.0,399.2;950.0,399.9;950.0,399.2;950.0,399.9;950.0,399.2;950.0,399.2;923.6,399.9;897.1,399.2;870.7,399.9;844.3,399.2;817.9,399.9;791.4,399.2;739.0,399.2;751.0,401.1;743.0,401.1;742.1,401.1;752.1,401.1;744.1,401.1;768.8,401.1;808.8,397.1;812.8,399.2;808.8,396.9;782.5,395.4;788.5,396.9;808.5,399.9;750.0,399.2;745.0,401.1;725.0,405.5;735.0,402.6;735.0,396.2;748.0,399.9;768.8,399.9;800.0,397.1;810.0,399.2;800.0,399.2;820.0,399.9;840.0,399.2;850.0,399.2;601.4,401.1;656.4,397.1;663.4,404.9;656.4,399.2;690.0,401.1;700.0,401.1;705.0,395.2;712.0,395.2;730.0,399.2;740.0,399.9;745.0,399.2;729.0,399.2;733.0,402.6;735.0,396.2;743.0,401.1;751.0,401.1;787.0,397.1;791.0,399.2;791.0,399.9;751.9,401.1;773.9,404.9;781.9,399.2;781.9,399.2;776.0,399.9;768.0,401.1;768.0,401.1;778.0,395.8;778.0,395.8;778.0,401.1"/><g transform="scale(-1,1)"><g transform="translate(0,0)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2133;0.2200;0.2283;0.2327;0.2383;0.2467;0.2540;0.2633;0.2800;0.2917;0.3017;0.3150;0.3267;0.3383;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3967;0.4167;0.4367;0.4600;0.4833;0.5233;0.5450;0.5567;0.5800;0.6033;0.6200;0.6433;0.6600;0.6700;0.6900;0.7100;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8383;0.8600;0.8767;0.8900;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="-30.0;-20.0;-30.0;-20.0;-30.0;-30.0;-20.0;-30.0;-20.0;-30.0;-20.0;-30.0;-30.0;-25.0;-25.0;-25.0;-25.0;-25.0;-25.0;-12.0;-30.0;-12.0;-4.0;-12.0;-20.0;-30.0;-28.0;-34.0;-25.0;-32.0;-20.0;-20.0;-12.0;-30.0;-30.0;-20.0;-30.0;-30.0;-25.0;-12.0;-30.0;-30.0;-30.0;-30.0;-4.0;-4.0;-30.0;-20.0;-30.0;-30.0;-25.0;-32.0;-25.0;-25.0;-12.0;-30.0;-20.0;-25.0;-30.0;-30.0;-30.0;-20.0;-28.0;-28.0;-8.0;-8.0;-25.0"/><line x1="0" y1="0" x2="0" y2="78" stroke="#6c7380" stroke-width="25" stroke-linecap="round"/><g transform="translate(0,78)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2133;0.2200;0.2283;0.2327;0.2383;0.2467;0.2540;0.2633;0.2800;0.2917;0.3017;0.3150;0.3267;0.3383;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3967;0.4167;0.4367;0.4600;0.4833;0.5233;0.5450;0.5567;0.5800;0.6033;0.6200;0.6433;0.6600;0.6700;0.6900;0.7100;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8383;0.8600;0.8767;0.8900;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="36.0;24.0;36.0;24.0;36.0;36.0;24.0;36.0;24.0;36.0;24.0;36.0;36.0;30.0;30.0;30.0;30.0;30.0;30.0;18.0;36.0;16.0;8.0;16.0;24.0;36.0;34.0;40.0;30.0;34.0;24.0;24.0;18.0;36.0;36.0;24.0;36.0;36.0;30.0;18.0;40.0;36.0;34.0;34.0;6.0;6.0;36.0;24.0;36.0;36.0;30.0;34.0;30.0;30.0;18.0;36.0;24.0;30.0;40.0;36.0;36.0;24.0;34.0;34.0;10.0;10.0;30.0"/><line x1="0" y1="0" x2="0" y2="78" stroke="#6c7380" stroke-width="19" stroke-linecap="round"/><line x1="0" y1="78" x2="17" y2="82" stroke="#6c7380" stroke-width="13" stroke-linecap="round"/></g></g></g></g><g><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2133;0.2200;0.2283;0.2327;0.2383;0.2467;0.2540;0.2633;0.2800;0.2917;0.3017;0.3150;0.3267;0.3383;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3967;0.4167;0.4367;0.4600;0.4833;0.5233;0.5450;0.5567;0.5800;0.6033;0.6200;0.6433;0.6600;0.6700;0.6900;0.7100;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8383;0.8600;0.8767;0.8900;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="9.0;7.0;9.0;7.0;9.0;9.0;7.0;9.0;7.0;9.0;7.0;9.0;9.0;-6.0;8.0;8.0;-6.0;8.0;8.0;-18.0;9.0;-6.0;-14.0;-6.0;7.0;9.0;6.0;16.0;2.0;24.0;7.0;7.0;-18.0;9.0;9.0;7.0;9.0;9.0;8.0;-18.0;26.0;9.0;18.0;18.0;22.0;22.0;9.0;7.0;9.0;9.0;2.0;24.0;8.0;8.0;-18.0;9.0;7.0;8.0;26.0;9.0;9.0;7.0;6.0;6.0;34.0;34.0;8.0"/><g><g transform="translate(0,-84)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2133;0.2200;0.2283;0.2327;0.2383;0.2467;0.2540;0.2633;0.2800;0.2917;0.3017;0.3150;0.3267;0.3383;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3967;0.4167;0.4367;0.4600;0.4833;0.5233;0.5450;0.5567;0.5800;0.6033;0.6200;0.6433;0.6600;0.6700;0.6900;0.7100;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8383;0.8600;0.8767;0.8900;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="-72.0;-78.0;-72.0;-78.0;-72.0;-72.0;-78.0;-72.0;-78.0;-72.0;-78.0;-72.0;-72.0;-60.0;-75.0;-75.0;-60.0;-75.0;-75.0;25.0;-72.0;-40.0;-20.0;-40.0;-78.0;-72.0;-35.0;-103.0;-75.0;-40.0;-78.0;-78.0;25.0;-72.0;-72.0;-78.0;-72.0;-72.0;-75.0;25.0;-20.0;-72.0;-88.0;-88.0;-80.0;-80.0;-72.0;-78.0;-72.0;-72.0;-75.0;-40.0;-75.0;-75.0;25.0;-72.0;-78.0;-75.0;-20.0;-72.0;-72.0;-78.0;-96.0;-96.0;-8.0;-8.0;-75.0"/><line x1="0" y1="0" x2="0" y2="52" stroke="#6c7380" stroke-width="16" stroke-linecap="round"/><g transform="translate(0,52)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2133;0.2200;0.2283;0.2327;0.2383;0.2467;0.2540;0.2633;0.2800;0.2917;0.3017;0.3150;0.3267;0.3383;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3967;0.4167;0.4367;0.4600;0.4833;0.5233;0.5450;0.5567;0.5800;0.6033;0.6200;0.6433;0.6600;0.6700;0.6900;0.7100;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8383;0.8600;0.8767;0.8900;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-90.0;-105.0;-105.0;-90.0;-105.0;-105.0;-30.0;-105.0;-110.0;-120.0;-110.0;-105.0;-105.0;-125.0;-4.0;-105.0;-130.0;-105.0;-105.0;-30.0;-105.0;-105.0;-105.0;-105.0;-105.0;-105.0;-30.0;-70.0;-105.0;-30.0;-30.0;-40.0;-40.0;-105.0;-105.0;-105.0;-105.0;-105.0;-130.0;-105.0;-105.0;-30.0;-105.0;-105.0;-105.0;-70.0;-105.0;-105.0;-105.0;-4.0;-4.0;-20.0;-20.0;-105.0"/><line x1="0" y1="0" x2="0" y2="50" stroke="#6c7380" stroke-width="14" stroke-linecap="round"/><circle cx="0" cy="56" r="14" fill="#f4f4f4"/></g></g></g></g></g><line x1="0" y1="-4" x2="0" y2="-86" stroke="#a9b0bc" stroke-width="40" stroke-linecap="round"/><line x1="0" y1="2" x2="0" y2="-22" stroke="#f4f4f4" stroke-width="44" stroke-linecap="butt"/><g transform="translate(0,-92)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2133;0.2200;0.2283;0.2327;0.2383;0.2467;0.2540;0.2633;0.2800;0.2917;0.3017;0.3150;0.3267;0.3383;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3967;0.4167;0.4367;0.4600;0.4833;0.5233;0.5450;0.5567;0.5800;0.6033;0.6200;0.6433;0.6600;0.6700;0.6900;0.7100;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8383;0.8600;0.8767;0.8900;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;-10.0;0.0;0.0;-10.0;0.0;0.0;-22.0;0.0;0.0;4.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;-22.0;0.0;0.0;0.0;0.0;0.0;0.0;-22.0;14.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;-22.0;0.0;0.0;0.0;14.0;0.0;0.0;0.0;0.0;0.0;18.0;18.0;0.0"/><line x1="0" y1="2" x2="2" y2="-8" stroke="#a9b0bc" stroke-width="12" stroke-linecap="round"/><circle cx="2" cy="-23" r="19" fill="#a9b0bc"/><path d="M-14,-31 a17,17 0 0 1 32,-2" stroke="#f4f4f4" stroke-width="5" fill="none" stroke-linecap="round"/></g></g><g transform="translate(0,-84)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2133;0.2200;0.2283;0.2327;0.2383;0.2467;0.2540;0.2633;0.2800;0.2917;0.3017;0.3150;0.3267;0.3383;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3967;0.4167;0.4367;0.4600;0.4833;0.5233;0.5450;0.5567;0.5800;0.6033;0.6200;0.6433;0.6600;0.6700;0.6900;0.7100;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8383;0.8600;0.8767;0.8900;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="-55.0;-58.0;-55.0;-58.0;-55.0;-55.0;-58.0;-55.0;-58.0;-55.0;-58.0;-55.0;-55.0;-55.0;-55.0;-55.0;-55.0;-55.0;-55.0;5.0;-55.0;15.0;30.0;15.0;-58.0;-55.0;-55.0;-55.0;-20.0;-100.0;-58.0;-58.0;5.0;-55.0;-55.0;-58.0;-55.0;-55.0;-55.0;5.0;-15.0;-55.0;-92.0;-92.0;-70.0;-70.0;-55.0;-58.0;-55.0;-55.0;-20.0;-100.0;-55.0;-55.0;5.0;-55.0;-58.0;-55.0;-15.0;-55.0;-55.0;-58.0;-55.0;-55.0;-8.0;-8.0;-55.0"/><line x1="0" y1="0" x2="0" y2="52" stroke="#a9b0bc" stroke-width="16" stroke-linecap="round"/><g transform="translate(0,52)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2133;0.2200;0.2283;0.2327;0.2383;0.2467;0.2540;0.2633;0.2800;0.2917;0.3017;0.3150;0.3267;0.3383;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3967;0.4167;0.4367;0.4600;0.4833;0.5233;0.5450;0.5567;0.5800;0.6033;0.6200;0.6433;0.6600;0.6700;0.6900;0.7100;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8383;0.8600;0.8767;0.8900;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-45.0;-125.0;-80.0;-70.0;-80.0;-125.0;-125.0;-125.0;-125.0;-130.0;-4.0;-125.0;-125.0;-45.0;-125.0;-125.0;-125.0;-125.0;-125.0;-125.0;-45.0;-60.0;-125.0;-30.0;-30.0;-50.0;-50.0;-125.0;-125.0;-125.0;-125.0;-130.0;-4.0;-125.0;-125.0;-45.0;-125.0;-125.0;-125.0;-60.0;-125.0;-125.0;-125.0;-125.0;-125.0;-20.0;-20.0;-125.0"/><line x1="0" y1="0" x2="0" y2="50" stroke="#a9b0bc" stroke-width="14" stroke-linecap="round"/><circle cx="0" cy="56" r="14" fill="#f4f4f4"/></g></g></g></g></g></g><g transform="translate(0,0)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2133;0.2200;0.2283;0.2327;0.2383;0.2467;0.2540;0.2633;0.2800;0.2917;0.3017;0.3150;0.3267;0.3383;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3967;0.4167;0.4367;0.4600;0.4833;0.5233;0.5450;0.5567;0.5800;0.6033;0.6200;0.6433;0.6600;0.6700;0.6900;0.7100;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8383;0.8600;0.8767;0.8900;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="18.0;26.0;18.0;26.0;18.0;18.0;26.0;18.0;26.0;18.0;26.0;18.0;18.0;22.0;22.0;22.0;22.0;22.0;22.0;34.0;18.0;44.0;-62.0;44.0;26.0;18.0;22.0;30.0;26.0;10.0;26.0;26.0;34.0;18.0;18.0;26.0;18.0;18.0;22.0;34.0;28.0;18.0;22.0;22.0;-85.0;-85.0;18.0;26.0;18.0;18.0;26.0;10.0;22.0;22.0;34.0;18.0;26.0;22.0;28.0;18.0;18.0;26.0;22.0;22.0;8.0;8.0;22.0"/><line x1="0" y1="0" x2="0" y2="78" stroke="#a9b0bc" stroke-width="25" stroke-linecap="round"/><g transform="translate(0,78)"><g><animateTransform attributeName="transform" type="rotate" dur="30s" repeatCount="indefinite" calcMode="spline" keyTimes="0.0000;0.0167;0.0333;0.0500;0.0667;0.0833;0.0990;0.1148;0.1305;0.1462;0.1619;0.1776;0.2133;0.2200;0.2283;0.2327;0.2383;0.2467;0.2540;0.2633;0.2800;0.2917;0.3017;0.3150;0.3267;0.3383;0.3433;0.3517;0.3583;0.3667;0.3767;0.3873;0.3967;0.4167;0.4367;0.4600;0.4833;0.5233;0.5450;0.5567;0.5800;0.6033;0.6200;0.6433;0.6600;0.6700;0.6900;0.7100;0.7233;0.7333;0.7400;0.7500;0.7583;0.7683;0.7800;0.8000;0.8150;0.8283;0.8383;0.8600;0.8767;0.8900;0.9183;0.9333;0.9517;0.9767;1.0000" keySplines="0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.1 0.6 0.2 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1;0.4 0 0.3 1" values="-24.0;-32.0;-24.0;-32.0;-24.0;-24.0;-32.0;-24.0;-32.0;-24.0;-32.0;-24.0;-24.0;-28.0;-28.0;-28.0;-28.0;-28.0;-28.0;-24.0;-24.0;-6.0;-8.0;-6.0;-32.0;-24.0;-28.0;-30.0;-30.0;-8.0;-32.0;-32.0;-24.0;-24.0;-24.0;-32.0;-24.0;-24.0;-28.0;-24.0;-36.0;-24.0;-28.0;-28.0;105.0;105.0;-24.0;-32.0;-24.0;-24.0;-30.0;-8.0;-28.0;-28.0;-24.0;-24.0;-32.0;-28.0;-36.0;-24.0;-24.0;-32.0;-28.0;-28.0;-6.0;-6.0;-28.0"/><line x1="0" y1="0" x2="0" y2="78" stroke="#a9b0bc" stroke-width="19" stroke-linecap="round"/><line x1="0" y1="78" x2="17" y2="82" stroke="#a9b0bc" stroke-width="13" stroke-linecap="round"/></g></g></g></g></g></g></g><g transform="translate(706.1,326.4)" opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.2127;0.2133;0.2167;0.2240;1.0000" values="0;0;1;.9;0;0"/><g><animateTransform attributeName="transform" type="scale" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.2127;0.2133;0.2167;0.2240;1.0000" values="0.2;0.2;0.72;1.00;1.28;0.2"/><use href="#burst" fill="#e11d2a"/><use href="#burst" fill="#fff" transform="scale(.55) rotate(18)"/></g></g><g transform="translate(711.1,326.4)" opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.2320;0.2327;0.2360;0.2433;1.0000" values="0;0;1;.9;0;0"/><g><animateTransform attributeName="transform" type="scale" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.2320;0.2327;0.2360;0.2433;1.0000" values="0.2;0.2;0.72;1.00;1.28;0.2"/><use href="#burst" fill="#e11d2a"/><use href="#burst" fill="#fff" transform="scale(.55) rotate(18)"/></g></g><g transform="translate(737.8,341.8)" opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.2533;0.2540;0.2573;0.2647;1.0000" values="0;0;1;.9;0;0"/><g><animateTransform attributeName="transform" type="scale" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.2533;0.2540;0.2573;0.2647;1.0000" values="0.2;0.2;1.08;1.50;1.92;0.2"/><use href="#burst" fill="#e11d2a"/><use href="#burst" fill="#fff" transform="scale(.55) rotate(18)"/></g></g><g transform="translate(638.4,472.7)" opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.3010;0.3017;0.3050;0.3123;1.0000" values="0;0;1;.9;0;0"/><g><animateTransform attributeName="transform" type="scale" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.3010;0.3017;0.3050;0.3123;1.0000" values="0.2;0.2;0.81;1.12;1.44;0.2"/><use href="#burst" fill="#e11d2a"/><use href="#burst" fill="#fff" transform="scale(.55) rotate(18)"/></g></g><g transform="translate(593.9,326.4)" opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.3510;0.3517;0.3550;0.3623;1.0000" values="0;0;1;.9;0;0"/><g><animateTransform attributeName="transform" type="scale" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.3510;0.3517;0.3550;0.3623;1.0000" values="0.2;0.2;0.63;0.88;1.12;0.2"/><use href="#burst" fill="#e11d2a"/><use href="#burst" fill="#fff" transform="scale(.55) rotate(18)"/></g></g><g transform="translate(595.2,341.8)" opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.3660;0.3667;0.3700;0.3773;1.0000" values="0;0;1;.9;0;0"/><g><animateTransform attributeName="transform" type="scale" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.3660;0.3667;0.3700;0.3773;1.0000" values="0.2;0.2;0.81;1.12;1.44;0.2"/><use href="#burst" fill="#e11d2a"/><use href="#burst" fill="#fff" transform="scale(.55) rotate(18)"/></g></g><g transform="translate(739.8,341.8)" opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.3867;0.3873;0.3907;0.3980;1.0000" values="0;0;1;.9;0;0"/><g><animateTransform attributeName="transform" type="scale" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.3867;0.3873;0.3907;0.3980;1.0000" values="0.2;0.2;0.99;1.38;1.76;0.2"/><use href="#burst" fill="#e11d2a"/><use href="#burst" fill="#fff" transform="scale(.55) rotate(18)"/></g></g><g transform="translate(589.4,284.8)" opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.5443;0.5450;0.5483;0.5557;1.0000" values="0;0;1;.9;0;0"/><g><animateTransform attributeName="transform" type="scale" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.5443;0.5450;0.5483;0.5557;1.0000" values="0.2;0.2;1.35;1.88;2.40;0.2"/><use href="#burst" fill="#e11d2a"/><use href="#burst" fill="#fff" transform="scale(.55) rotate(18)"/></g></g><g transform="translate(627.3,402.0)" opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.6593;0.6600;0.6633;0.6707;1.0000" values="0;0;1;.9;0;0"/><g><animateTransform attributeName="transform" type="scale" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.6593;0.6600;0.6633;0.6707;1.0000" values="0.2;0.2;1.17;1.62;2.08;0.2"/><use href="#burst" fill="#e11d2a"/><use href="#burst" fill="#fff" transform="scale(.55) rotate(18)"/></g></g><g transform="translate(696.1,326.4)" opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.7327;0.7333;0.7367;0.7440;1.0000" values="0;0;1;.9;0;0"/><g><animateTransform attributeName="transform" type="scale" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.7327;0.7333;0.7367;0.7440;1.0000" values="0.2;0.2;0.72;1.00;1.28;0.2"/><use href="#burst" fill="#e11d2a"/><use href="#burst" fill="#fff" transform="scale(.55) rotate(18)"/></g></g><g transform="translate(595.3,341.8)" opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.7493;0.7500;0.7533;0.7607;1.0000" values="0;0;1;.9;0;0"/><g><animateTransform attributeName="transform" type="scale" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.7493;0.7500;0.7533;0.7607;1.0000" values="0.2;0.2;0.90;1.25;1.60;0.2"/><use href="#burst" fill="#e11d2a"/><use href="#burst" fill="#fff" transform="scale(.55) rotate(18)"/></g></g><g transform="translate(720.1,341.8)" opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.7677;0.7683;0.7717;0.7790;1.0000" values="0;0;1;.9;0;0"/><g><animateTransform attributeName="transform" type="scale" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.7677;0.7683;0.7717;0.7790;1.0000" values="0.2;0.2;0.99;1.38;1.76;0.2"/><use href="#burst" fill="#e11d2a"/><use href="#burst" fill="#fff" transform="scale(.55) rotate(18)"/></g></g><g transform="translate(724.4,458.7)" opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.8277;0.8283;0.8317;0.8390;1.0000" values="0;0;1;.9;0;0"/><g><animateTransform attributeName="transform" type="scale" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.8277;0.8283;0.8317;0.8390;1.0000" values="0.2;0.2;0.90;1.25;1.60;0.2"/><use href="#burst" fill="#e11d2a"/><use href="#burst" fill="#fff" transform="scale(.55) rotate(18)"/></g></g></g><rect width="1280" height="720" fill="url(#vig)"/><g><rect x="96" y="38" width="380" height="16" fill="#1d2026" stroke="#fff" stroke-opacity=".3" transform="skewX(-18)"/><rect x="96" y="38" width="380" height="16" fill="#e11d2a" transform="skewX(-18)"><animate attributeName="width" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.3017;0.3083;0.3517;0.3583;0.3667;0.3733;0.6600;0.6667;0.7500;0.7567;0.9800;1.0000" values="380.0;380.0;356.1;356.1;337.4;337.4;313.5;313.5;278.9;278.9;252.3;252.3;252.3"/></rect><rect x="804" y="38" width="380" height="16" fill="#1d2026" stroke="#fff" stroke-opacity=".3" transform="skewX(-18)"/><rect x="804" y="38" width="380" height="16" fill="#e8ebf0" transform="skewX(-18)"><animate attributeName="width" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.2133;0.2200;0.2327;0.2393;0.2540;0.2607;0.3873;0.3940;0.5450;0.5517;0.7333;0.7400;0.7683;0.7750;0.8283;0.8350;0.9800;1.0000" values="380.0;380.0;358.7;358.7;337.4;337.4;305.5;305.5;276.3;276.3;236.4;236.4;215.1;215.1;185.8;185.8;159.2;159.2;159.2"/><animate attributeName="x" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.2133;0.2200;0.2327;0.2393;0.2540;0.2607;0.3873;0.3940;0.5450;0.5517;0.7333;0.7400;0.7683;0.7750;0.8283;0.8350;0.9800;1.0000" values="804.0;804.0;825.3;825.3;846.6;846.6;878.5;878.5;907.7;907.7;947.6;947.6;968.9;968.9;998.2;998.2;1024.8;1024.8;1024.8"/></rect></g><g font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" fill="#fff"><text x="104" y="30" font-size="20" letter-spacing="3">YOU</text><text x="1176" y="30" font-size="20" letter-spacing="3" text-anchor="end">RIVAL</text><text x="640" y="40" font-size="22" text-anchor="middle" letter-spacing="4" fill="#c9ced6">ROUND 1</text></g><rect x="560" y="52" width="160" height="4" fill="#2a2d33"/><rect x="560" y="52" width="0" height="4" fill="#e11d2a"><animate attributeName="width" dur="30s" repeatCount="indefinite" values="0;160" keyTimes="0;1"/></rect><g opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.1967;0.2050;0.2717;0.2800;1.0000" values="0;0;1;1;0;0"/><text x="640" y="662" text-anchor="middle" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="46" letter-spacing="5" fill="#fff" stroke="#000" stroke-width="1">JAB · JAB · CROSS</text><rect x="540" y="676" width="200" height="4" fill="#e11d2a"/></g><g opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.2900;0.2983;0.3283;0.3367;1.0000" values="0;0;1;1;0;0"/><text x="640" y="662" text-anchor="middle" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="46" letter-spacing="5" fill="#fff" stroke="#000" stroke-width="1">LOW KICK &amp; CHECK</text><rect x="540" y="676" width="200" height="4" fill="#e11d2a"/></g><g opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.3433;0.3517;0.4083;0.4167;1.0000" values="0;0;1;1;0;0"/><text x="640" y="662" text-anchor="middle" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="46" letter-spacing="5" fill="#fff" stroke="#000" stroke-width="1">BLOCK &amp; COUNTER</text><rect x="540" y="676" width="200" height="4" fill="#e11d2a"/></g><g opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.5167;0.5250;0.5783;0.5867;1.0000" values="0;0;1;1;0;0"/><text x="640" y="662" text-anchor="middle" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="46" letter-spacing="5" fill="#fff" stroke="#000" stroke-width="1">HIGH KICK</text><rect x="540" y="676" width="200" height="4" fill="#e11d2a"/></g><g opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.6300;0.6383;0.6817;0.6900;1.0000" values="0;0;1;1;0;0"/><text x="640" y="662" text-anchor="middle" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="46" letter-spacing="5" fill="#fff" stroke="#000" stroke-width="1">KNEE</text><rect x="540" y="676" width="200" height="4" fill="#e11d2a"/></g><g opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.7167;0.7250;0.7917;0.8000;1.0000" values="0;0;1;1;0;0"/><text x="640" y="662" text-anchor="middle" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="46" letter-spacing="5" fill="#fff" stroke="#000" stroke-width="1">FAST EXCHANGE</text><rect x="540" y="676" width="200" height="4" fill="#e11d2a"/></g><g opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.8133;0.8217;0.8517;0.8600;1.0000" values="0;0;1;1;0;0"/><text x="640" y="662" text-anchor="middle" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="46" letter-spacing="5" fill="#fff" stroke="#000" stroke-width="1">LOW KICK</text><rect x="540" y="676" width="200" height="4" fill="#e11d2a"/></g><g opacity="0"><animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0.0000;0.9100;0.9183;0.9583;0.9667;1.0000" values="0;0;1;1;0;0"/><text x="640" y="662" text-anchor="middle" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="46" letter-spacing="5" fill="#fff" stroke="#000" stroke-width="1">RESPECT</text><rect x="540" y="676" width="200" height="4" fill="#e11d2a"/></g>
+<g opacity="1">
+ <animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0;0.07;0.09;1" values="1;1;0;0"/>
+ <rect width="1280" height="720" fill="#000" opacity=".55"/>
+ <text x="640" y="350" text-anchor="middle" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="120" letter-spacing="6" fill="#e8ebf0">SILENTFIGHTER</text>
+ <text x="640" y="410" text-anchor="middle" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="34" letter-spacing="22" fill="#e11d2a">FIGHT ACADEMY</text>
+</g>
+<g opacity="0">
+ <animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0;0.078;0.083;0.115;0.125;1" values="0;0;1;1;0;0"/>
+ <text x="640" y="400" text-anchor="middle" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="170" letter-spacing="8" fill="#e11d2a" stroke="#fff" stroke-width="3">FIGHT!</text>
+</g>
+<g opacity="0">
+ <animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0;0.96;0.985;1" values="0;0;1;1"/>
+ <rect width="1280" height="720" fill="#000"/>
+ <text x="640" y="345" text-anchor="middle" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="104" letter-spacing="6" fill="#e8ebf0">SILENTFIGHTER</text>
+ <text x="640" y="400" text-anchor="middle" font-family="Anton, Impact, 'Arial Narrow', sans-serif" font-style="italic" font-size="30" letter-spacing="20" fill="#e11d2a">FIGHT ACADEMY</text>
+ <text x="640" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" letter-spacing="3" fill="#9aa2ae">@silentfighter.jo</text>
+</g>
+<rect width="1280" height="720" fill="#000" opacity="1">
+ <animate attributeName="opacity" dur="30s" repeatCount="indefinite" keyTimes="0;0.02;1" values="1;0;0"/></rect>
+</svg></div>
+      <div class="controls">
+        <button type="button" id="play" aria-label="Pause">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path id="playicon" d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+        </button>
+        <button type="button" id="restart" aria-label="Restart">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/></svg>
+        </button>
+        <input id="scrub" type="range" min="0" max="30" step="0.1" value="0" aria-label="Seek through the round">
+        <output id="clock" for="scrub">0:00 / 0:30</output>
+      </div>
+    </div>
+    <ul class="moves" id="moves">
+      <li><button type="button" data-t="5.9"><time>0:06</time>Jab · jab · cross</button></li>
+      <li><button type="button" data-t="8.6"><time>0:09</time>Low kick &amp; check</button></li>
+      <li><button type="button" data-t="10.2"><time>0:10</time>Block &amp; counter</button></li>
+      <li><button type="button" data-t="15.4"><time>0:15</time>High kick</button></li>
+      <li><button type="button" data-t="18.8"><time>0:19</time>Knee</button></li>
+      <li><button type="button" data-t="21.4"><time>0:21</time>Fast exchange</button></li>
+      <li><button type="button" data-t="27.2"><time>0:27</time>Respect</button></li>
+    </ul>
+  </div>
+</section>
+</div>
+
+<section id="training">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Training</p>
+      <h2>Pick your lane</h2>
+      <p class="lede">Every class starts the same way: warm-up, drills, pad work, then conditioning. What changes is the pace and the goal.</p>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <h3>Kids</h3>
+        <p>A first taste of kickboxing built around balance, coordination and confidence.</p>
+        <ul><li>Stance and footwork games</li><li>Basic punches and kicks on pads</li><li>Listening, patience, teamwork</li></ul>
+      </article>
+      <article class="card">
+        <h3>Juniors &amp; teens</h3>
+        <p>More volume and more detail. Combinations, defence, timing and fitness.</p>
+        <ul><li>Jab, cross, hook, low and high kicks</li><li>Blocking, checking and counters</li><li>Strength and stamina circuits</li></ul>
+      </article>
+      <article class="card">
+        <h3>Competition team</h3>
+        <p>For students who want to compete. Sparring with gear, ring rules and match prep.</p>
+        <ul><li>Controlled sparring rounds</li><li>Tournament preparation</li><li>Medals earned on the mat</li></ul>
+      </article>
+    </div>
+    <p class="note">Class times and fees are shared directly by the academy. Message us on Instagram and we will reply with what fits your child or you.</p>
+  </div>
+</section>
+
+<section id="gallery" style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Gallery</p>
+      <h2>Faces from the mat</h2>
+    </div>
+    <div class="masonry" id="masonry">
+      <button type="button" data-src="img/class-wide.jpg"><img src="img/class-wide.jpg" width="1170" height="878" alt="A full class standing in a circle on the mat, fists raised, with heavy bags behind them" loading="lazy"><span>Full class</span></button>
+      <button type="button" data-src="img/medals.jpg"><img src="img/medals.jpg" width="824" height="1600" alt="Two young students with gold medals and green hand wraps between two coaches" loading="lazy"><span>Medal day</span></button>
+      <button type="button" data-src="img/team-2.jpg"><img src="img/team-2.jpg" width="1170" height="1560" alt="Students and two coaches posing with raised fists in front of the academy wall" loading="lazy"><span>Evening session</span></button>
+      <button type="button" data-src="img/class-kneel.jpg"><img src="img/class-kneel.jpg" width="1170" height="1106" alt="Students in academy kickboxing shirts, front row kneeling, fists raised" loading="lazy"><span>Team shirts</span></button>
+      <button type="button" data-src="img/team-1.jpg"><img src="img/team-1.jpg" width="1170" height="1560" alt="Coaches and students standing together in academy shirts, two with medals" loading="lazy"><span>Coaches and students</span></button>
+    </div>
+  </div>
+</section>
+
+<section id="videos" style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Videos</p>
+      <h2>See the gym</h2>
+    </div>
+    <div class="vids">
+      <figure class="vid">
+        <video controls playsinline preload="metadata" poster="vid/poster-1.jpg"><source src="vid/clip-1.mp4" type="video/mp4"></video>
+        <figcaption><b>Inside the academy</b>Mats, bags and the training floor.</figcaption>
+      </figure>
+      <figure class="vid">
+        <video controls playsinline preload="metadata" poster="vid/poster-2.jpg"><source src="vid/clip-2.mp4" type="video/mp4"></video>
+        <figcaption><b>From the coach</b>A quick word before training.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<div class="join" id="join">
+  <section>
+    <div class="wrap">
+      <div>
+        <h2>Step on the mat.</h2>
+        <p>Send us a message on Instagram to book a trial class, ask about schedules or find the right group for your child.</p>
+      </div>
+      <div class="handle">
+        <span class="tag">@silentfighter.jo</span>
+        <a class="btn" href="https://www.instagram.com/silentfighter.jo" target="_blank" rel="noopener"><span>Open Instagram</span></a>
+        <button type="button" class="btn ghost" id="copy"><span id="copylabel">Copy handle</span></button>
+      </div>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="img/logo.jpg" alt=""><span>Silentfighter Fight Academy</span></a>
+    <span>Kickboxing academy · Jordan · <a href="https://www.instagram.com/silentfighter.jo" target="_blank" rel="noopener">@silentfighter.jo</a></span>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button type="button" id="lbclose" aria-label="Close photo">×</button>
+  <img id="lbimg" src="" alt="">
+</div>
+
+<script>
+(function(){
+  var svg = document.querySelector('#stage svg');
+  var playBtn = document.getElementById('play'), icon = document.getElementById('playicon');
+  var scrub = document.getElementById('scrub'), clock = document.getElementById('clock');
+  var moves = document.querySelectorAll('#moves button');
+  var DUR = 30, playing = true, dragging = false, visible = true;
+  var PAUSE = 'M6 5h4v14H6zM14 5h4v14h-4z', PLAY = 'M7 4v16l13-8z';
+  function fmt(t){ var s = Math.floor(t); return Math.floor(s/60) + ':' + ('0'+(s%60)).slice(-2); }
+  function setPlaying(on){
+    playing = on;
+    if (on && visible) svg.unpauseAnimations(); else svg.pauseAnimations();
+    icon.setAttribute('d', on ? PAUSE : PLAY);
+    playBtn.setAttribute('aria-label', on ? 'Pause' : 'Play');
+  }
+  function seek(t){ svg.setCurrentTime(Math.max(0, Math.min(DUR-0.05, t))); tick(); }
+  function tick(){
+    var t = svg.getCurrentTime() % DUR;
+    if (!dragging) scrub.value = t;
+    clock.textContent = fmt(t) + ' / 0:30';
+    moves.forEach(function(b){
+      var s = parseFloat(b.dataset.t);
+      b.setAttribute('aria-current', t >= s && t < s + 2.4 ? 'true' : 'false');
+    });
+  }
+  (function loop(){ tick(); requestAnimationFrame(loop); })();
+  playBtn.addEventListener('click', function(){ setPlaying(!playing); });
+  document.getElementById('restart').addEventListener('click', function(){ seek(0); setPlaying(true); });
+  scrub.addEventListener('input', function(){ dragging = true; seek(parseFloat(scrub.value)); });
+  scrub.addEventListener('change', function(){ dragging = false; });
+  moves.forEach(function(b){ b.addEventListener('click', function(){ seek(parseFloat(b.dataset.t)); setPlaying(true); }); });
+  if ('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      visible = es[0].isIntersecting;
+      if (playing) { if (visible) svg.unpauseAnimations(); else svg.pauseAnimations(); }
+    }, {threshold:.15}).observe(document.getElementById('stage'));
+  }
+  svg.setCurrentTime(1.0);
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){ seek(6.4); setPlaying(false); }
+
+  // gallery lightbox
+  var lb = document.getElementById('lightbox'), lbimg = document.getElementById('lbimg'), last = null;
+  document.querySelectorAll('#masonry button').forEach(function(b){
+    b.addEventListener('click', function(){
+      last = b; lbimg.src = b.dataset.src; lbimg.alt = b.querySelector('img').alt; lb.hidden = false;
+      document.getElementById('lbclose').focus();
+    });
+  });
+  function closeLb(){ lb.hidden = true; lbimg.src = ''; if (last) last.focus(); }
+  document.getElementById('lbclose').addEventListener('click', closeLb);
+  lb.addEventListener('click', function(e){ if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !lb.hidden) closeLb(); });
+
+  // copy handle
+  var copy = document.getElementById('copy'), label = document.getElementById('copylabel');
+  copy.addEventListener('click', function(){
+    function done(ok){ label.textContent = ok ? 'Copied' : 'Select the handle above'; setTimeout(function(){ label.textContent = 'Copy handle'; }, 1800); }
+    try { navigator.clipboard.writeText('@silentfighter.jo').then(function(){ done(true); }, function(){ done(false); }); }
+    catch(e){ done(false); }
+  });
+})();
+</script>
